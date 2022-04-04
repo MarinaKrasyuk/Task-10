@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TestClass {
+public class Utils {
     private static final double TAX = 0.2;
-    private final Gson gson;
+    private static Gson gson = null;
     List<RealItem> realItems;
     List<VirtualItem> virtualItems;
     private double total;
 
-    public TestClass() {
+    public Utils() {
         gson = new Gson();
         realItems=new ArrayList<>();
         virtualItems=new ArrayList<>();
     }
 
-    public  void writeFile(Cart cart){
+    public  static void writeFile(Cart cart){
         try (FileWriter writer = new FileWriter("src/main/resources/" + cart.getCartName() + ".json")) {
             writer.write(gson.toJson(cart));
         } catch (IOException e) {
@@ -32,17 +32,14 @@ public class TestClass {
         BufferedReader reader = new BufferedReader(new FileReader(file));
         return gson.fromJson(reader.readLine(), Cart.class);
     }
-    public void addRealItems(RealItem realItem){
+    public double addRealItems(RealItem realItem){
         realItems.add(realItem);
-        total += realItem.getPrice() + realItem.getPrice()*TAX;
+        return realItem.getPrice() + realItem.getPrice()*TAX;
     }
-    public void addVirtualItem(VirtualItem item) {
-        virtualItems.add(item);
-        total += item.getPrice() + item.getPrice()*TAX;
-    }
-    public double getTotalPrice() {
-       return total;
 
+    public static double getPrice(double price)
+    {
+       return  price*(1+TAX);
     }
 
 }
