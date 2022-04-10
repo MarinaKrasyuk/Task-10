@@ -1,10 +1,9 @@
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+package UnitTest;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import org.testng.annotations.*;
 import org.testng.Assert;
 import parser.JsonParser;
 import parser.NoSuchFileException;
@@ -13,6 +12,7 @@ import shop.Cart;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,22 +22,23 @@ public class JsonParserTest {
     static Utils utils =new Utils();
     static Cart cart;
 
-    @BeforeAll
-    public static void init() {
+    @BeforeSuite(alwaysRun = true)
+    public void init() {
         //create test data
         cart = new Cart("eugen-cart");
     }
 
-    @ParameterizedTest(name = "Exception: Invalid File")
-    @ValueSource(strings = { "", "src/resources/", "test.json","src/main/resources/test.json","src/main/resources/test.txt" })
-    void readFromFileTestException(String strings) {
-        File file=new File(strings);
+    @Parameters("path")
+    @Test
+    void readFromFileTestException(String path) {
+        File file=new File(path);
         Exception exception = assertThrows(NoSuchFileException.class, () ->
                 parser.readFromFile(file));
         assertEquals(String.format("File %s.json not found!", file), exception.getMessage());
     }
-    @Test
-    @DisplayName("Write to File")
+
+
+    @Test (groups = "excludeTest")
     void writeToFileTest() throws IOException {
         parser.writeToFile(cart);
         //get expected cart
@@ -46,9 +47,8 @@ public class JsonParserTest {
         Assert.assertEquals(cart.getTotalPrice(), expectedresult.getTotalPrice());
 
     }
-    @Disabled
-    @Test
-    @DisplayName("Read from File")
+
+    @Test(groups = "includeTest")
     void readFromFileTest() throws IOException {
 
         utils.writeFile(cart);
@@ -58,4 +58,18 @@ public class JsonParserTest {
         Assert.assertEquals(cart.getTotalPrice(), expectedresult.getTotalPrice());
 
     }
+
+    @DataProvider(name = "testDate")
+    public Object[][] createData() {
+        Object[][] data = new Object[][] { { "" }, {"src/resources/" }, { "test.json" }, {"src/main/resources/test.json" } };
+        return data;
+    }
+    @Test(dataProvider = "testDate")
+    public void TestException(String path){
+        File file=new File(path);
+        Exception exception = assertThrows(NoSuchFileException.class, () ->
+                parser.readFromFile(file));
+        assertEquals(String.format("File %s.json not found!", file), exception.getMessage());
+    }
+
 }

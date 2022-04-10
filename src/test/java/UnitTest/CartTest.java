@@ -1,8 +1,11 @@
+package UnitTest;
 
 
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.Test;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeGroups;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
 import shop.Cart;
 import shop.RealItem;
 import shop.VirtualItem;
@@ -17,8 +20,8 @@ public class CartTest {
     static RealItem car2;
     static VirtualItem disk;
 
-    @BeforeAll
-    public static void init(){
+    @BeforeSuite(alwaysRun = true)
+    public  void init(){
         //create test data
         cart=new Cart("eugen-cart");
         car1 = new RealItem();
@@ -33,8 +36,7 @@ public class CartTest {
 
     }
 
-    @Test
-    @DisplayName("Test for adding Real Item")
+    @Test(groups = "includeTest")
     public void addRealItemTest(){
         cart.addRealItem(car1);
         double result=cart.getTotalPrice();
@@ -45,7 +47,7 @@ public class CartTest {
 
     }
 
-    @Test
+    @Test(groups = "includeTest")
     public void deleteRealItemTest(){
         cart.addRealItem(car1);
         cart.addRealItem(car2);
