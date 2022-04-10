@@ -1,0 +1,24 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="SuiteClassUnitTest" configfailurepolicy="continue" verbose="1" >
+    <test name="unit test" >
+        <classes>
+            <class name="UnitTest.CartTest">
+                <methods>
+                    <include name="addRealItemTest"></include>
+                    <exclude name="deleteRealItemTest"></exclude>
+                </methods>
+            </class>
+            <class name="UnitTest.JsonParserTest">
+                <methods>
+                    <exclude name="readFromFileTestException"></exclude>
+                </methods>
+            </class>
+        </classes>
+      
+
+
+
+    </test>
+
+</suite>

@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="SuiteGroupUnitTest" configfailurepolicy="continue" verbose="1" >
+    <test name="unit test" >
+        <groups>
+            <run>
+                <exclude name="excludeTest"  />
+                <include name="includeTest"  />
+            </run>
+        </groups>
+        <classes>
+            <class name="UnitTest.JsonParserTest"></class>
+            <class name="UnitTest.CartTest"></class>
+        </classes>
+    </test>
+
+</suite>

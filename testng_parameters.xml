@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="SuiteParamUnitTest" configfailurepolicy="continue" verbose="1" >
+    <parameter name="path" value="src/main/resources/test"></parameter>
+    <test name="unit test" >
+
+        <classes>
+            <class name="UnitTest.JsonParserTest">
+                <methods>
+                    <include name="readFromFileTestException"></include>
+                    <include name="TestException"></include>
+                </methods>
+            </class>
+
+        </classes>
+
+
+
+
+    </test>
+
+</suite>
